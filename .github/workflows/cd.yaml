@@ -6,6 +6,7 @@ on:
 jobs: 
     Deploying-to-Tomcat: 
         runs-on: ubuntu-latest
+        environment: Test
         if: ${{ github.event.workflow_run.conclusion }} == 'success'
         steps: 
             - name: Downloading the artifact form Build
@@ -17,9 +18,6 @@ jobs:
                 search_artifacts: true
             - name: Deploying to Tomcat
               run: |
-                ls
-                cd */*/
-                ls
-                pwd
+                curl -v -u ${{ secrets.TOMCAT_USR }}: ${{secrets.TOMCAT_PSW}} -T /home/runner/work/spring-boot-jsp-postgres/spring-boot-jsp-postgres/artifacts/artifact-v1/app.war http://34.125.70.121:8080/manager/text/deploy?path=/spring-demo-app-war
                 
             
