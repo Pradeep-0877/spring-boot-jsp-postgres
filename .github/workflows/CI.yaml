@@ -20,9 +20,9 @@ jobs:
                 key: m2-${{hashFiles('**/pom.xml')}}
             - name: initializing java 11
               uses: actions/setup-java@v3
-              with: 
-                java-version: 11
-                distribution: 'Zulu'
+              with:
+               java-version: 11
+               distribution: 'zulu'
             - name: Building the application
               run: mvn package -DskipTests
             - name: archiving the artifacts
