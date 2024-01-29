@@ -1,0 +1,35 @@
+name: build
+on: 
+    workflow_dispatch: 
+        inputs: 
+            ARTIFACT_NAME: 
+                default: artifact-v1
+                required: true
+            Environment: 
+                type: environment
+jobs: 
+    Build: 
+        runs-on: ubuntu-latest
+        steps: 
+            - name: Fetching the code
+              uses: actions/checkout@v3
+            - name: caching the m2 repository
+              uses: actions/cache@v3
+              with: 
+                path: ~/.m2
+                key: m2-${{hashFiles('**/pom.xml')}}
+            - name: initializing java 11
+              uses: actions/setup-java@v3
+              with: 
+                java-version: 11
+                distribution: 'Zulu'
+            - name: Building the application
+              run: mvn package -DskipTests
+            - name: archiving the artifacts
+              uses: actions/upload-artifact@v3
+              with: 
+                name: ${{ github.event.inputs.ARTIFACT_NAME }}
+                path: target/*.war
+
+                
+            
